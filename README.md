@@ -25,7 +25,7 @@ The ultimate service for managing multi-channel notifications with a single API.
 
 
 <h3>Who are you?</h3>
-*Melanie: I am a software development student.
-*William: I am a web developer.
++ Melanie: I am a software development student.
++ William: I am a web developer.
 
 <h3>Additional Resources/Info</h3>
