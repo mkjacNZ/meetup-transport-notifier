@@ -1,7 +1,7 @@
 "use client";
 
 import React, { Component } from 'react';
-import { GoogleMap, LoadScript, Marker } from '@react-google-maps/api';
+import { GoogleMap, LoadScript, Marker, DistanceMatrixService } from '@react-google-maps/api';
 import { decode, encode } from "@googlemaps/polyline-codec";
 
 export default async function Map() {
@@ -69,6 +69,27 @@ export default async function Map() {
   try {
     const response = await fetch('https://routes.googleapis.com/directions/v2:computeRoutes', requestOptions);
     data = await response.json()
+
+    var service = new google.maps.DistanceMatrixService();
+    let origins = new Array();
+    let destinations = new Array();
+
+    for (let i = 0; i < decode(data.routes[0].polyline.encodedPolyline, 5).length - 1; i++) {
+      origins.push(decode(data.routes[0].polyline.encodedPolyline, 5)[i]);
+      destinations.push(decode(data.routes[0].polyline.encodedPolyline, 5)[i + 1])
+    }
+
+    service.getDistanceMatrix(
+      {
+        origins: origins,
+        destinations: destinations,
+        travelMode: google.maps.TravelMode['DRIVING'],
+        transitOptions: TransitOptions,
+        drivingOptions: DrivingOptions,
+        unitSystem: UnitSystem,
+        avoidHighways: Boolean,
+        avoidTolls: Boolean,
+      }, callback);
 
     // Handle the response
     console.log(data.routes[0]);
